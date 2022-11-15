@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 
 class Memory{
-  private short[] ram;
+  private byte[] ram;
   private short counter = 0;
   private short ROM_START = 0x200;
   private  short[] fonts = {
@@ -29,26 +29,25 @@ class Memory{
 	0xF0, 0x80, 0xF0, 0x80, 0x80  // F
   };
   public Memory(int size){
-    ram = new short[size];
+    ram = new byte[size];
 
         for(short bit : fonts){
-        ram[counter] = bit;
+        ram[counter] =(byte) bit;
         counter++;
       }
   }
-  public short getIndex(short index){
+  public byte getIndex(short index){
     return ram[index];
   }
-  public void setIndex(short index, short input){
+  public void setIndex(short index, byte input){
     ram[index] = input;
   }
+
+  public void setIndex(int index,int input){ ram[index] = (byte) input;}
   public void dumpMemory(int slice){
     String[] temp = new String[ram.length];
     for(int n = 0; n < ram.length; n++){
-      //temp[n] = String.format("%8s", Integer.toBinaryString(ram[n])).replace(" ", "0");
-        temp[n] = String.format("0x%02X", (byte) ram[n]);
-
-        //temp[n] = Integer.toString(ram[n],2);
+        temp[n] = String.format("0x%02X", ram[n]);
     }
     for(int i = 0; i<=ram.length; i+= slice){
       System.out.printf("0x%04X",  i);
@@ -60,7 +59,7 @@ class Memory{
       byte[] array = Files.readAllBytes(Paths.get(input));
 
         counter = ROM_START;
-        for(short bit : array){
+        for(byte bit : array){
         ram[counter] = bit;
         counter++;
       }
