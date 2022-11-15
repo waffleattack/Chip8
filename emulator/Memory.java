@@ -1,13 +1,15 @@
 package emulator;
-import java.util.Arrays;
-import static emulator.CPU.ROM_START;
+
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.io.IOException;
+import java.util.Arrays;
+
 
 class Memory{
   private short[] ram;
   private short counter = 0;
+  private short ROM_START = 0x200;
   private  short[] fonts = {
 	0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
 	0x20, 0x60, 0x20, 0x20, 0x70, // 1
@@ -43,10 +45,13 @@ class Memory{
   public void dumpMemory(int slice){
     String[] temp = new String[ram.length];
     for(int n = 0; n < ram.length; n++){
-      //temp[n] = String.format("0x%02X", (byte) ram[n]);
-      temp[n] = Integer.toString(ram[n],2);
+      //temp[n] = String.format("%8s", Integer.toBinaryString(ram[n])).replace(" ", "0");
+        temp[n] = String.format("0x%02X", (byte) ram[n]);
+
+        //temp[n] = Integer.toString(ram[n],2);
     }
     for(int i = 0; i<=ram.length; i+= slice){
+      System.out.printf("0x%04X",  i);
       System.out.println(Arrays.toString(Arrays.copyOfRange(temp, i, i+slice)));
     }
   }
